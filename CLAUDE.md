@@ -4,7 +4,7 @@
 
 {{One paragraph describing the core research question and contribution.}}
 
-**Formal:** {{Mathematical formulation of the main claim, if applicable.}}
+**Formal:** {{Mathematical formulation of the main claim, if applicable.}} See `docs/research_log/FORMAL_FRAMEWORK.md` for full problem definition, assumptions, and proofs.
 
 **Key hypotheses:** See `docs/research_log/HYPOTHESES.md` for H1-H{{N}}.
 
@@ -92,8 +92,9 @@ Located in `docs/references/`. Check the `CLAUDE.md` in each sub-folder for navi
 
 - `docs/research_log/WORKFLOW_GUIDE.md` -- The Research OS manual
 - `docs/research_log/TIMELINE.md` -- Full roadmap
+- `docs/research_log/FORMAL_FRAMEWORK.md` -- Problem definition, notation, definitions, assumptions, property identification, theorems & proofs
 - `docs/research_log/LIT_REVIEW.md` -- SOTA Gap Matrix
-- `docs/research_log/HYPOTHESES.md` -- Hypothesis tracking
+- `docs/research_log/HYPOTHESES.md` -- Empirical hypothesis tracking (links to theorems in FORMAL_FRAMEWORK.md)
 - `docs/research_log/ABLATION_LOG.md` -- Experiment comparisons
 - `docs/research_log/DECISIONS.md` -- Architectural pivots
 - `docs/research_log/INFRA_STACKS.md` -- Infrastructure options & cost analysis

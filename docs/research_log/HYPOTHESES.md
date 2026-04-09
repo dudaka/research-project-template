@@ -1,10 +1,18 @@
 # Hypotheses
 
+Each hypothesis is an empirically testable claim. Formal proofs live in `FORMAL_FRAMEWORK.md`; hypotheses link to the relevant theorem via the **Formal basis** field.
+
+A* papers require both: a theorem proving a property AND experiments validating it. This file tracks the empirical side; `FORMAL_FRAMEWORK.md` tracks the theoretical side.
+
+---
+
 ## H1: {{Main Claim}} ({{Type: Replication / Formalization / Novel}})
 
 **Claim:** {{One sentence stating what you expect to find.}}
 
 **Formal:** {{Mathematical formulation, if applicable.}}
+
+**Formal basis:** {{Theorem T{{N}} / Lemma L{{N}} in `FORMAL_FRAMEWORK.md`. State "NONE -- purely empirical" if no proof is needed.}}
 
 **Test:** {{How you will test this. What data, what sweep, what metrics, what statistical test.}}
 
@@ -24,6 +32,8 @@
 
 **Formal:** {{Formulation.}}
 
+**Formal basis:** {{Theorem/Lemma reference in `FORMAL_FRAMEWORK.md`, or NONE.}}
+
 **Test:** {{Method.}}
 
 **Status:** NOT TESTED
@@ -40,6 +50,8 @@
 **Claim:** {{Statement.}}
 
 **Formal:** {{Formulation.}}
+
+**Formal basis:** {{Theorem/Lemma reference in `FORMAL_FRAMEWORK.md`, or NONE.}}
 
 **Test:** {{Method.}}
 
@@ -60,6 +72,8 @@ TEMPLATE for adding new hypotheses:
 **Claim:** {{One sentence.}}
 
 **Formal:** {{Math, if applicable.}}
+
+**Formal basis:** {{Theorem T{{N}} / Lemma L{{N}} in FORMAL_FRAMEWORK.md, or NONE -- purely empirical.}}
 
 **Test:** {{Data, sweep, metrics, statistical test.}}
 

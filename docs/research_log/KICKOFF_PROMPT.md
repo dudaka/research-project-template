@@ -9,40 +9,83 @@ Use this prompt when starting a new research project with Claude Code. Copy-past
 ```
 I'm starting a new research project using the Research OS template.
 
-Here's the context:
-- **Topic:** {{one sentence describing the research question}}
-- **Target venue:** {{NeurIPS / EMNLP / ICML / ACL / workshop / etc.}} {{year}}
-- **Deep research report:** saved in docs/deep-research/{{filename}}
-- **Papers to ingest:** {{list arXiv IDs or filenames in incoming_papers/}}
+- **Target venue:** {{NeurIPS / EMNLP / ICML / ACL / AAAI / IJCAI / workshop / Q1 journal / etc.}} {{year}}
+- **Deadline:** {{date}}
+- **Compute:** {{local GPU, cloud budget, free tiers}}
 
-Please help me fill in the project templates in this order:
+I have deep research files from Gemini (report + Q&A conversations). I will drop
+them one by one. Do NOT fill any templates until I say "all files ingested."
 
-1. `CLAUDE.md` -- objective, formal claim, core argument, code structure, infrastructure stack
-2. `docs/research_log/HYPOTHESES.md` -- H1-HN with prior evidence from the deep research report
-3. `docs/research_log/TIMELINE.md` -- phased roadmap with decision gates and cost estimates
-4. `docs/research_log/LIT_REVIEW.md` -- SOTA gap matrix (pick the right column dimensions for my domain)
-5. `.claude/rules/research_protocol.md` -- evaluation metric and scoring rubric
-6. `.claude/rules/infra_standards.md` -- provider stack and experiment protocol
-7. `docs/research_log/INFRA_STACKS.md` -- budget vs best-result cost analysis
+---
 
-Use Sequential Thinking for any complex design decisions. Log all decisions in DECISIONS.md.
+PHASE 1: INGESTION (after each file I drop)
+
+Use ultrathink to read the file thoroughly. Then produce a brief summary:
+- **Key findings:** most important claims, methods, gaps, references
+- **Relevant to:** which parts of the template this informs (problem definition,
+  methodology, related work, experiments, evaluation)
+- **Open questions:** anything unclear or needing my clarification
+- **Contradictions:** any conflicts with previously ingested files
+
+Wait for the next file.
+
+---
+
+PHASE 2: SYNTHESIS (after I say "all files ingested")
+
+1. Cross-consistency check: verify all files agree on the core problem, approach,
+   and claims. Flag contradictions — ask me to resolve before proceeding.
+2. Present a synthesis for my confirmation:
+   - The research question (one paragraph)
+   - The proposed contribution (what is new)
+   - Formal problem sketch (inputs, outputs, objective)
+   - Key properties to prove (from FORMAL_FRAMEWORK.md Section 5.2)
+   - Any remaining intake questions the files did not answer
+3. Wait for my confirmation before proceeding to Phase 3.
+
+---
+
+PHASE 3: TEMPLATE FILLING (after I confirm the synthesis)
+
+Fill templates in this order, using ultrathink and Sequential Thinking for every
+complex decision. Log all decisions in DECISIONS.md.
+
+1. `FORMAL_FRAMEWORK.md` Sections 1-5 -- problem definition, notation, definitions,
+   assumptions, property identification (this is the foundation — everything else
+   depends on it)
+2. `CLAUDE.md` -- objective, formal claim, core argument, code structure, infra stack
+3. `HYPOTHESES.md` -- H1-HN with prior evidence, each linked to theorems in
+   FORMAL_FRAMEWORK.md via the "Formal basis" field
+4. `LIT_REVIEW.md` -- SOTA gap matrix (pick column dimensions for my domain)
+5. `TIMELINE.md` -- phased roadmap with theoretical development milestones, decision
+   gates, and cost estimates
+6. `research_protocol.md` -- evaluation metric and scoring rubric
+7. `infra_standards.md` -- provider stack and experiment protocol
+8. `INFRA_STACKS.md` -- budget vs best-result cost analysis
+
+After all templates are filled:
+- Run a final consistency check across ALL files (FORMAL_FRAMEWORK, CLAUDE.md,
+  HYPOTHESES, LIT_REVIEW, TIMELINE, rules). Flag any mismatches.
+- Verify bidirectional links: every theorem points to a hypothesis, every hypothesis
+  with a formal basis points to a theorem.
+- Present a summary of all decisions logged in DECISIONS.md.
 ```
 
 ---
 
 ## Intake Questions
 
-Before filling templates, answer these (or have Claude ask you):
+Most of these will be answered by the ingested files. During Phase 2 synthesis, Claude should verify it can answer all of them. Any that remain unanswered become questions for the user.
 
 1. **What's the research question?** (one sentence)
 2. **What's the formal claim?** (mathematical formulation if applicable)
-3. **Why does this matter?** (core argument -- why your approach, why now)
-4. **What's the primary dataset/benchmark?**
-5. **What's the primary evaluation metric?**
-6. **What compute do you have?** (local GPU, cloud budget, free tiers)
-7. **Do you have the deep-search report saved?** (PDF, markdown, browser)
-8. **Which papers are must-reads?** (Tier 1 = blocks everything)
-9. **Target venue and deadline?**
+3. **What is the formal problem?** (optimization, decision, learning, estimation -- what are the inputs, outputs, and objective?)
+4. **What type of theoretical guarantee do you aim for?** (convergence, regret bound, approximation ratio, generalization bound, complexity result, correctness, other)
+5. **What are the key assumptions your approach relies on?** (convexity, smoothness, bounded domain, i.i.d. data, etc.)
+6. **Why does this matter?** (core argument -- why your approach, why now)
+7. **What's the primary dataset/benchmark?**
+8. **What's the primary evaluation metric?**
+9. **Which papers are must-reads?** (Tier 1 = blocks everything)
 
 ---
 
@@ -65,37 +108,47 @@ cp .env.example .env
 # Edit .env with your keys
 ```
 
-### Phase 1: Define the Project (~30 min, with Claude)
+### Phase 1: Ingest Deep Research & Define Project (~1-2 hours, with Claude)
 
-Work through the First Session Prompt above. Claude will help you fill in all 7 template files using your deep research report as source material.
+```bash
+# 1. Archive deep research files
+cp path/to/gemini-report.md docs/deep-research/
+cp path/to/qa-session-*.md docs/deep-research/
+```
+
+1. Paste the First Session Prompt into Claude Code
+2. Drop files one by one (report first, then Q&A files)
+3. After each file, review Claude's ingestion summary — correct any misunderstandings
+4. Say "all files ingested" when done
+5. Review Claude's synthesis — confirm or adjust before template filling
+6. Claude fills all templates, then runs the final consistency check
 
 Key outputs:
+- `FORMAL_FRAMEWORK.md` with problem definition, notation, definitions, assumptions, property identification
 - `CLAUDE.md` fully populated (project brain)
-- `HYPOTHESES.md` with H1-HN, each with prior evidence and test plan
-- `TIMELINE.md` with 4-phase roadmap and decision gates
+- `HYPOTHESES.md` with H1-HN, each linked to theorems in FORMAL_FRAMEWORK.md
 - `LIT_REVIEW.md` with gap matrix columns chosen for your domain
+- `TIMELINE.md` with 4-phase roadmap, theoretical development milestones, and decision gates
 - `DECISIONS.md` with initial design decisions (D1-DN)
 - Rules files customized for your evaluation metric and infrastructure
 
 ### Phase 2: Ingest Literature (~1-2 hours)
 
 ```bash
-# 1. Archive deep research report
-cp path/to/gemini-report.md docs/deep-research/
-
-# 2. Convert papers (one at a time)
+# 1. Convert papers (one at a time)
 ./convert_paper.sh path/to/paper1.pdf --use_llm
 ./convert_paper.sh path/to/paper2.pdf --use_llm
 
-# 3. Organize into Tier 3 reference structure
+# 2. Organize into Tier 3 reference structure
 uv run organize_papers.py
 
-# 4. For each paper, ask Claude:
+# 3. For each paper, ask Claude:
 #    "Read docs/references/<slug>/CLAUDE.md, then the methodology section.
-#     Update LIT_REVIEW.md and HYPOTHESES.md with this paper's findings."
+#     Update LIT_REVIEW.md, HYPOTHESES.md, and FORMAL_FRAMEWORK.md with
+#     this paper's findings."
 ```
 
-Repeat step 4 for each paper. This is where the gap matrix and prior evidence sections get populated.
+Repeat step 3 for each paper. This populates the gap matrix, prior evidence, and may refine assumptions or properties.
 
 ### Phase 3: Build Infrastructure (~1-2 days)
 
@@ -157,6 +210,28 @@ Resume from where we left off.
 ### Reviewer 2 mode
 ```
 Act as a hostile reviewer for {{venue}}.
-Read HYPOTHESES.md and LIT_REVIEW.md.
-What are the 3 biggest weaknesses in our experimental design?
+Read HYPOTHESES.md, LIT_REVIEW.md, and FORMAL_FRAMEWORK.md.
+Use the checklist in research_protocol.md Section 5.
+What are the 3 biggest weaknesses in our theoretical claims and experimental design?
+```
+
+### Rebuttal preparation (after reviews arrive)
+```
+Read CLAUDE.md, FORMAL_FRAMEWORK.md, and HYPOTHESES.md.
+I will paste the reviewer comments. For each concern:
+1. Classify: theoretical gap, experimental gap, clarity issue, or misunderstanding
+2. If theoretical gap: can we tighten the proof or add a lemma?
+3. If experimental gap: what additional experiment would address it? Estimate cost and time.
+4. If misunderstanding: draft a clear rebuttal paragraph.
+Use ultrathink and Sequential Thinking for complex responses.
+```
+
+### Camera-ready (after acceptance)
+```
+Read CLAUDE.md and DECISIONS.md.
+I will paste the final reviewer feedback. Help me:
+1. Incorporate required changes into the paper
+2. Update FORMAL_FRAMEWORK.md if any proofs were tightened during rebuttal
+3. Verify notation consistency one final time
+4. Prepare the code release (clean repo, README, license)
 ```

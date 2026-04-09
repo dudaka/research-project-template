@@ -9,10 +9,21 @@
 - [ ] Focus: {{Paper 2}} -- {{what to extract from it}}
 - [ ] Focus: {{Paper 3}} -- {{what to extract from it}}
 
-### Week 3: Infrastructure
+### Week 2-3: Formal Problem Definition & Theoretical Development
+- [ ] Write formal problem definition in `FORMAL_FRAMEWORK.md` (inputs, outputs, objective, constraints)
+- [ ] Populate notation table and numbered definitions
+- [ ] List and justify all assumptions
+- [ ] Identify properties to prove: fill Claim Inventory and Property Inventory (`FORMAL_FRAMEWORK.md` Section 5)
+- [ ] Develop proof sketches for core lemmas and theorems
+- [ ] Build dependency graph (must be a DAG)
+- [ ] Link theorems to hypotheses in `HYPOTHESES.md` (bidirectional)
+- [ ] **DECISION GATE:** Are proof sketches solid enough to guide implementation? If no -> revise theory before coding.
+
+### Week 3-4: Infrastructure
 - [ ] Set up compute environment (local / cloud / hybrid)
 - [ ] Build core abstractions: {{provider, orchestrator, evaluator, etc.}}
 - [ ] Integration test on minimal configuration
+- [ ] Verify code matches proven formulations in `FORMAL_FRAMEWORK.md`
 - [ ] Dependencies added via `uv add`
 
 ### Week 4: Data Pipeline + Pilot (Stage 1: Discover)
@@ -60,7 +71,11 @@
 
 ## Phase 4: Analysis & Writing (Month 4)
 
-### Week 13: Failure Attribution
+### Week 13: Proof Polishing & Failure Attribution
+- [ ] Complete all full proofs (status -> PROVEN) in `FORMAL_FRAMEWORK.md`
+- [ ] Run pre-submission proof checklist (`FORMAL_FRAMEWORK.md` Section 8)
+- [ ] Prepare proof sketches for main body, full proofs for appendix
+- [ ] Verify notation consistency across `FORMAL_FRAMEWORK.md`, paper draft, and code
 - [ ] Categorize failures systematically
 - [ ] Generate all experiment result tables
 
@@ -75,8 +90,9 @@
 - [ ] Ethics statement (if applicable)
 
 ### Week 16: Review & Submission
-- [ ] Internal peer review ("Reviewer 2" mode)
+- [ ] Internal peer review ("Reviewer 2" mode using `research_protocol.md` Section 5)
 - [ ] Address weaknesses
+- [ ] Prepare code/artifact release (clean repo, README, license, reproducibility instructions)
 - [ ] Polish and submit
 
 ## Cost Summary (Adaptive 3-Stage Design)

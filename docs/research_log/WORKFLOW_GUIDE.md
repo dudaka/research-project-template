@@ -28,7 +28,8 @@ All research tracking lives in `docs/research_log/`:
 | File | Purpose | Update Frequency |
 | :--- | :--- | :--- |
 | `TIMELINE.md` | Full roadmap with phases, weeks, deliverables, decision gates | Weekly |
-| `HYPOTHESES.md` | Formal claims, prior evidence, test plans, status | When evidence changes |
+| `HYPOTHESES.md` | Empirical claims, prior evidence, test plans, status | When evidence changes |
+| `FORMAL_FRAMEWORK.md` | Problem definition, notation, definitions, assumptions, property identification, theorems, proofs | During theoretical development |
 | `DECISIONS.md` | Architectural choices with rationale and alternatives considered | Per decision |
 | `LIT_REVIEW.md` | SOTA Gap Matrix -- what exists, what's missing, your contribution | Per paper ingested |
 | `ABLATION_LOG.md` | Experiment comparisons (Config A vs B, metric, result) | Per experiment |
@@ -37,7 +38,7 @@ All research tracking lives in `docs/research_log/`:
 
 ## Starting a New Project
 
-See `KICKOFF_PROMPT.md` for the full kickoff workflow: intake questions, first-session prompt to copy-paste, the 5-phase roadmap (Scaffold -> Define -> Ingest -> Build -> Run), and reusable session patterns (daily stand-up, context recovery, reviewer mode).
+See `KICKOFF_PROMPT.md` for the full kickoff workflow: intake questions, first-session prompt to copy-paste, the 6-phase roadmap (Scaffold -> Ingest & Define -> Ingest Literature -> Build -> Run -> Write), and reusable session patterns (daily stand-up, context recovery, reviewer mode, rebuttal).
 
 ## Daily Workflow
 
@@ -55,22 +56,61 @@ Ask Claude to review `TIMELINE.md` and `HYPOTHESES.md`. Summarize where you left
 4. Verify local `CLAUDE.md` map and `references/` sub-folder were created
 5. Ask Claude to update `LIT_REVIEW.md` with the new paper's gaps
 6. Ask Claude to update `HYPOTHESES.md` with new prior evidence
-7. Mark the paper as ingested in root `CLAUDE.md`
+7. Ask Claude to update `FORMAL_FRAMEWORK.md` if the paper affects assumptions, definitions, or prior proof techniques
+8. Mark the paper as ingested in root `CLAUDE.md`
 
-### Stage C: Surgical Implementation
+### Stage C: Formal Problem Definition & Theoretical Development
+
+All formal work lives in `docs/research_log/FORMAL_FRAMEWORK.md`. This stage has sub-steps:
+
+**C.1 Problem Definition** (do this once, early -- during or right after literature review)
+1. Write the informal problem statement (Section 1.1)
+2. Formalize: inputs, outputs, objective, constraints (Section 1.2)
+3. Classify the problem (Section 1.3)
+4. Populate the notation table (Section 2)
+5. Write numbered definitions for all key concepts (Section 3)
+6. Log the problem formulation decision in `DECISIONS.md`
+
+**C.2 Assumptions** (before proving anything)
+1. List all assumptions with precise mathematical statements (Section 4)
+2. Justify each: why reasonable, necessary vs. sufficient, holds in experiments?
+3. Cross-check with literature: are these standard in your field?
+
+**C.3 Property Identification** (before writing theorems)
+1. List all claims from abstract/introduction in the Claim Inventory (Section 5.1)
+2. Classify each: needs proof, needs experiment, or both
+3. Use the Contribution Type to Property Map (Section 5.2) to identify expected properties
+4. Fill the Property Inventory (Section 5.4) -- this is the master checklist
+5. Novel properties become theorems; inherited properties get citations
+
+**C.4 Theoretical Results** (iterative -- expect multiple revisions)
+1. Start with lemmas (building blocks), then theorems, then corollaries (Section 6)
+2. Write proof sketches first -- these become the main body of the paper
+3. Expand to full proofs -- these become the appendix
+4. Name the proof technique for each result
+5. Update the dependency graph (Section 7) -- must remain a DAG
+6. Link each theorem to the hypothesis it validates (`Validates hypothesis: H{{N}}`)
+7. Link each hypothesis back (`Formal basis: Theorem T{{N}}`)
+
+**C.5 Gate**
+- **Implementation gate:** No implementation until relevant proof status >= SKETCH ONLY
+- **Submission gate:** No submission until all core results are PROVEN. Run the checklist in `FORMAL_FRAMEWORK.md` Section 8
+
+### Stage D: Surgical Implementation
 
 1. Claude checks `docs/references/[paper]/CLAUDE.md` (the navigation map)
 2. Claude reads only the specific section file (e.g., `02_methodology.md`)
 3. Claude applies logic referencing `research_protocol.md` for rigor
-4. For diagrams: "Visual Bridge" -- Claude identifies the image reference, asks user to describe the visual
+4. Implementation must match the proven formulation exactly (see `research_protocol.md` Section 2)
+5. For diagrams: "Visual Bridge" -- Claude identifies the image reference, asks user to describe the visual
 
-### Stage D: Validation & Stress Testing
+### Stage E: Validation & Stress Testing
 
 - Ablation checks against `ABLATION_LOG.md`
-- "Reviewer 2" mode: Claude acts as hostile A* reviewer to find weaknesses
+- "Reviewer 2" mode: Claude acts as hostile A* reviewer using the checklist in `research_protocol.md` Section 5 (proof completeness, soundness, property coverage, assumption audit, theory-experiment alignment, baseline fairness, failure attribution, novelty audit)
 - Novelty audit against `LIT_REVIEW.md`
 
-### Stage E: Scholar's Wrap-up (End of Session)
+### Stage F: Scholar's Wrap-up (End of Session)
 
 1. Update `DECISIONS.md` with results and pivots
 2. Move completed items in `TIMELINE.md` to "Archive"
